@@ -1,10 +1,20 @@
 #include "../include/vector.h"
+#include <cmath>
 
 Vector::Vector(float x, float y) : x(x), y(y) {}
 
 Vector::Vector() : x(0), y(0) {}
 
 Vector::~Vector() {}
+
+Vector Vector::normalized() {
+    float magnitude = this->magnitude();
+    return Vector(x / magnitude, y / magnitude);
+}
+
+float Vector::magnitude() {
+    return std::sqrt(x * x + y * y);
+}
 
 
 Vector Vector::operator+(const Vector& other) const {

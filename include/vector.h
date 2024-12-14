@@ -6,6 +6,9 @@ public:
     Vector();
     ~Vector();
 
+    Vector normalized();
+    float magnitude();
+
     Vector operator+(const Vector& other) const;
     Vector& operator+=(const Vector& other);
 

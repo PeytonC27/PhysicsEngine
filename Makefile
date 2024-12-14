@@ -3,7 +3,7 @@ CXXFLAGS = -std=c++17 -Wall
 INCLUDE = -I./SDL2/include
 LIBS = -L./SDL2/lib -lmingw32 -lSDL2main -lSDL2
 SRCS = ./src/main.cpp ./src/framework.cpp
-OBJS = main.o framework.o coordinate.o circle.o rigidbody.o
+OBJS = main.o framework.o coordinate.o circle.o rigidbody.o square.o
 TARGET = main.exe
 
 $(TARGET): $(OBJS)
@@ -22,6 +22,9 @@ circle.o: ./src/circle.cpp ./include/circle.h ./include/shape.h
 	$(CXX) $(CXXFLAGS) $(INCLUDE) -c $< -o $@
 
 rigidbody.o: ./src/rigidbody.cpp ./include/rigidbody.h
+	$(CXX) $(CXXFLAGS) $(INCLUDE) -c $< -o $@
+
+square.o: ./src/square.cpp ./include/square.h ./include/shape.h 
 	$(CXX) $(CXXFLAGS) $(INCLUDE) -c $< -o $@
 
 clean:

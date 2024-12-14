@@ -9,4 +9,5 @@ public:
 
     Vector velocity;
 
+    bool jumped = false;
 };

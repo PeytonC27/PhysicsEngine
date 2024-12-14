@@ -5,34 +5,46 @@
 #include <iostream>
 #include "vector.h"
 #include <cmath>
+#include <vector>
 
 
 class Shape {
 public:
-    Shape(const Vector center, bool useGravity) : center(center), useGravity(useGravity) {}
+    Shape(const Vector center, bool useGravity=true, bool hasBounds=false) : center(center), useGravity(useGravity), hasBounds(hasBounds) {}
     virtual ~Shape() {}
+
+
+    virtual bool inBounds(Vector check) = 0;
+    virtual std::vector<Vector> getBoundChecks() = 0;
     virtual void draw(SDL_Renderer* renderer) = 0;
+
+    virtual bool isGrounded(float windowHeight) = 0;
+    virtual Vector getGroundCheckVector() = 0;
+
     virtual void physicsTick(float gravity, float delta, float windowHeight) {
+
         // the y coordinates are flipped in an image, so the ground level is the height of the 
-        float yPos = std::round(center.y);
-
-        // if the object is at the ground, bounce it back up
-        if (isUnderGround(yPos, windowHeight) && !groundedOverride && std::abs(rb.velocity.y) > 0.005) {
-            groundedOverride = true;
-            rb.velocity = Vector(rb.velocity.x, rb.velocity.y * -1);
-        }
-
-        // grounded check
-        if (yPos >= windowHeight && rb.velocity.y > 0) {
+        
+        // ground check
+        if (isUnderGround(center.y, windowHeight) && rb.velocity.y > 0) {
             center.y = windowHeight;
-            rb.velocity = Vector(rb.velocity.x, 0);
+            rb.velocity.y = 0;
         }
         
-        rb.applyGravity(gravity, delta);
+        if (useGravity)
+            rb.applyGravity(gravity, delta);
         center += rb.velocity;
 
-        if (!isUnderGround(yPos, windowHeight)) 
-            groundedOverride = false;
+        if (isUnderGround(center.y, windowHeight) && isGrounded(windowHeight))
+            std::cout << "both" << std::endl;
+        else if (isUnderGround(center.y, windowHeight))
+            std::cout << "under" << std::endl;
+        else if (isGrounded(windowHeight))
+            std::cout << "grounded" << std::endl;
+            
+
+        if (!isGrounded(windowHeight))
+            rb.jumped = false;
 
         //std::cout << center.x << " " << center.y << " " << std::endl;
     }
@@ -40,7 +52,9 @@ public:
     Vector center;
     RigidBody rb;
     bool useGravity;
+    bool hasBounds;
     bool groundedOverride = false;
+    bool grounded;
 
 private:
     bool isUnderGround(double yCoord, double windowHeight) {
