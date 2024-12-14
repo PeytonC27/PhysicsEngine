@@ -2,7 +2,7 @@
 #include <cmath>
 #include <iostream>
 
-Circle::Circle(Vector center, int radius, bool useGravity) : Shape(center, useGravity), radius(radius) {
+Circle::Circle(Vector center, float radius, bool useGravity) : Shape(center, useGravity), radius(radius) {
 }
 
 Circle::~Circle(){

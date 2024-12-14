@@ -4,7 +4,7 @@
 
 int main(int argc, char* argv[])
 {
-    int fps = 120;
+    int fps = 60;
     double msPerFrame = (1000.0/fps);
     double delta = 1.0/fps;
 
@@ -25,6 +25,7 @@ int main(int argc, char* argv[])
     fw.drawObjects();
 
     SDL_Event event;
+    const Uint8* state = SDL_GetKeyboardState(nullptr);;
 
     while (!(event.type == SDL_QUIT)) {
         SDL_Delay(msPerFrame);          // setting a delay
@@ -32,6 +33,11 @@ int main(int argc, char* argv[])
         fw.clear();                     // clear the last frame
         fw.calculatePhysics(gravity, delta);
         fw.drawObjects();               // drawing all objects
+
+        if (state[SDL_SCANCODE_E])
+            fw.addVelocity(Vector(1, 0));
+        if (state[SDL_SCANCODE_Q])
+            fw.addVelocity(Vector(-1, 0));
 
         SDL_PollEvent(&event);          // catching event
     }

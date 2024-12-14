@@ -31,9 +31,15 @@ void Framework::drawObjects() {
     SDL_RenderPresent(renderer);
 }
 
-void Framework::calculatePhysics(double gravity, double delta) {
+void Framework::calculatePhysics(float gravity, float delta) {
     for (const auto& shape : objects) {
         shape->physicsTick(gravity, delta, height-25);
+    }
+}
+
+void Framework::addVelocity(Vector velocity) {
+    for (const auto& shape : objects) {
+        shape->rb.addVelocity(velocity);
     }
 }
 

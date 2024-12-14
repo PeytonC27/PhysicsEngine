@@ -11,7 +11,8 @@ public:
     ~Framework();
 
     void createCircle(Vector coords, int radius);
-    void calculatePhysics(double gravity, double delta);
+    void calculatePhysics(float gravity, float delta);
+    void addVelocity(Vector velocity);
     void drawObjects();
     void clear();
 

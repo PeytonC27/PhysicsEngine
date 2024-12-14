@@ -12,20 +12,20 @@ public:
     Shape(const Vector center, bool useGravity) : center(center), useGravity(useGravity) {}
     virtual ~Shape() {}
     virtual void draw(SDL_Renderer* renderer) = 0;
-    virtual void physicsTick(double gravity, double delta, double windowHeight) {
+    virtual void physicsTick(float gravity, float delta, float windowHeight) {
         // the y coordinates are flipped in an image, so the ground level is the height of the 
         float yPos = std::round(center.y);
 
         // if the object is at the ground, bounce it back up
         if (isUnderGround(yPos, windowHeight) && !groundedOverride && std::abs(rb.velocity.y) > 0.005) {
             groundedOverride = true;
-            rb.velocity = rb.velocity * -0.9;
+            rb.velocity = Vector(rb.velocity.x, rb.velocity.y * -1);
         }
 
         // grounded check
         if (yPos >= windowHeight && rb.velocity.y > 0) {
             center.y = windowHeight;
-            rb.velocity = Vector(0, 0);
+            rb.velocity = Vector(rb.velocity.x, 0);
         }
         
         rb.applyGravity(gravity, delta);
