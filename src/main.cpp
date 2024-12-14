@@ -4,7 +4,7 @@
 
 int main(int argc, char* argv[])
 {
-    int fps = 60;
+    int fps = 120;
     double msPerFrame = (1000.0/fps);
     double delta = 1.0/fps;
 
@@ -14,7 +14,7 @@ int main(int argc, char* argv[])
 
     std::cout << delta << std::endl;
 
-    fw.createCircle(Vector(100, 300), 25);
+    Shape* mainCharacter = fw.createCircle(Vector(100, 300), 25);
     fw.createCircle(Vector(200, 250), 25);
     fw.createCircle(Vector(300, 200), 25);
     fw.createCircle(Vector(400, 150), 25);
@@ -34,10 +34,15 @@ int main(int argc, char* argv[])
         fw.calculatePhysics(gravity, delta);
         fw.drawObjects();               // drawing all objects
 
-        if (state[SDL_SCANCODE_E])
-            fw.addVelocity(Vector(1, 0));
-        if (state[SDL_SCANCODE_Q])
-            fw.addVelocity(Vector(-1, 0));
+        if (state[SDL_SCANCODE_D])
+            mainCharacter->rb.velocity = Vector(5, mainCharacter->rb.velocity.y);
+        else if (state[SDL_SCANCODE_A])
+            mainCharacter->rb.velocity = Vector(-5, mainCharacter->rb.velocity.y);
+        else
+            mainCharacter->rb.velocity = Vector(0, mainCharacter->rb.velocity.y);
+
+        if (state[SDL_SCANCODE_SPACE])
+            mainCharacter->rb.velocity = Vector(mainCharacter->rb.velocity.x, -5);
 
         SDL_PollEvent(&event);          // catching event
     }

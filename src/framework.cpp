@@ -19,8 +19,10 @@ Framework::~Framework() {
         delete object;
 }
 
-void Framework::createCircle(Vector coords, int radius) {
-    objects.push_back(new Circle(coords, radius, true));
+Circle* Framework::createCircle(Vector coords, int radius) {
+    Circle* newCircle = new Circle(coords, radius, true);
+    objects.push_back(newCircle);
+    return newCircle;
 }
 
 void Framework::drawObjects() {

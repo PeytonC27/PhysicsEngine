@@ -3,6 +3,7 @@
 #include "SDL2/SDL.h"
 #include "vector.h"
 #include "shape.h"
+#include "circle.h"
 #include <vector>
 
 class Framework {
@@ -10,7 +11,7 @@ public:
     Framework(int height, int width);
     ~Framework();
 
-    void createCircle(Vector coords, int radius);
+    Circle* createCircle(Vector coords, int radius);
     void calculatePhysics(float gravity, float delta);
     void addVelocity(Vector velocity);
     void drawObjects();
